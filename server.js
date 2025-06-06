@@ -1,7 +1,11 @@
+require('dotenv').config();
 
 const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
+const jwt = require('jsonwebtoken');
+const pool = require('./db');
+
 const app = express();
 
 const allowedOrigins = ['http://localhost:3000', 'https://pae141.github.io'];
@@ -11,14 +15,12 @@ app.use(cors({
     console.log('CORS Origin:', origin);
     if (!origin) return callback(null, true);
     if (allowedOrigins.indexOf(origin) === -1) {
-      const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
-      return callback(new Error(msg), false);
+      return callback(new Error('The CORS policy does not allow access from this origin.'), false);
     }
     return callback(null, true);
   },
   credentials: true,
-}));
-
+}))
 
 
 

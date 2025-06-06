@@ -1,4 +1,5 @@
-require('dotenv').config();  // ต้องอยู่บรรทัดแรกก่อนใช้ process.env
+// db.js
+require('dotenv').config();
 
 const { Pool } = require('pg');
 
@@ -10,7 +11,7 @@ console.log('PGDATABASE:', process.env.PGDATABASE);
 
 const pool = new Pool({
   host: process.env.PGHOST,
-  port: Number(process.env.PGPORT),
+  port: Number(process.env.PGPORT),  // ใช้จาก env แทน hardcode
   user: process.env.PGUSER,
   password: process.env.PGPASSWORD,
   database: process.env.PGDATABASE,
