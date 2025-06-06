@@ -30,7 +30,7 @@ app.get('/api/users/profile', authMiddleware, (req, res) => {
   // เรียก controller user profile ได้เลย
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 10000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
