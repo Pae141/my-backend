@@ -2,6 +2,8 @@ const { Pool } = require('pg');
 require('dotenv').config();
 
 console.log("PGHOST:", process.env.PGHOST); // ตรวจสอบค่า
+console.log("PGHOST =", process.env.PGHOST);
+
 
 const pool = new Pool({
   host: process.env.PGHOST,
