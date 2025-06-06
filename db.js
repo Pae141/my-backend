@@ -2,13 +2,12 @@ const { Pool } = require('pg');
 require('dotenv').config();
 
 const pool = new Pool({
-  host: process.env.PGHOST,          // อ่านค่าจาก env จริง ๆ
-  port: Number(process.env.PGPORT),  // แปลงเป็นตัวเลขด้วย Number()
+  host: process.env.PGHOST,
+  port: Number(process.env.PGPORT),
   user: process.env.PGUSER,
   password: process.env.PGPASSWORD,
   database: process.env.PGDATABASE,
-  ssl: { rejectUnauthorized: false },
+  ssl: process.env.PGSSLMODE === 'require' ? { rejectUnauthorized: false } : false,
 });
-
 
 module.exports = pool;
