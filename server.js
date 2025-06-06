@@ -1,5 +1,7 @@
 require('dotenv').config();
 
+console.log(process.env.PGHOST, process.env.PGPORT, process.env.PGUSER);
+
 const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
