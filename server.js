@@ -3,7 +3,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
-const jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken'); // ✅ มีแค่ที่นี่ที่เดียว
 const pool = require('./db');
 
 const app = express();
@@ -20,9 +20,7 @@ app.use(cors({
     return callback(null, true);
   },
   credentials: true,
-}))
-
-
+}));
 
 app.use(cookieParser());
 app.use(express.json());
@@ -32,8 +30,6 @@ const userRoutes = require('./routes/users');
 app.use('/api/users', userRoutes);
 
 // ✅ Middleware ตรวจสอบ token
-const jwt = require('jsonwebtoken');
-
 const authMiddleware = (req, res, next) => {
   const token = req.cookies.token;
   if (!token) return res.status(401).json({ message: "Unauthorized" });
@@ -47,7 +43,7 @@ const authMiddleware = (req, res, next) => {
   }
 };
 
-// ✅ (ถ้ายังไม่มีใน controller) เพิ่ม route ทดสอบดึงข้อมูล user จาก token
+// ✅ เพิ่ม route ทดสอบดึงข้อมูล user จาก token
 app.get('/api/users/profile', authMiddleware, (req, res) => {
   res.json({
     message: 'User profile',
