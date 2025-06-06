@@ -79,10 +79,13 @@ exports.logout = (req, res) => {
   res.clearCookie("token", {
     httpOnly: true,
     sameSite: "Lax",
-    secure: false,
+    secure: process.env.NODE_ENV === "production", // ใช้ secure เฉพาะ prod
+    path: "/",  // ใส่ path ให้ตรงกับ cookie ที่เซ็ตตอน login
+    // domain: "my-backend-a4bd.onrender.com", // ถ้าเซ็ต domain ตอน login ต้องใส่ด้วย
   });
   res.status(200).json({ message: "Logged out" });
 };
+
 
 
 exports.profile = async (req, res) => {
