@@ -1,4 +1,4 @@
-require('dotenv').config(); // ต้องอยู่บรรทัดแรกก่อนใช้ process.env
+
 const { Pool } = require('pg');
 
 console.log("PGHOST =", process.env.PGHOST); // ดูว่าอ่านค่ามาถูกไหม
