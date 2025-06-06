@@ -1,6 +1,9 @@
 require('dotenv').config();
 
-console.log(process.env.PGHOST, process.env.PGPORT, process.env.PGUSER);
+console.log('Using PGHOST:', process.env.PGHOST);
+console.log('Using PGPORT:', process.env.PGPORT);
+console.log('Using PGUSER:', process.env.PGUSER);
+
 
 const express = require('express');
 const cors = require('cors');
