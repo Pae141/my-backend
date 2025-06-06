@@ -16,15 +16,8 @@ const app = express();
 const allowedOrigins = ['http://localhost:3000', 'https://pae141.github.io'];
 
 app.use(cors({
-  origin: function(origin, callback) {
-    console.log('CORS Origin:', origin);
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) === -1) {
-      return callback(new Error('The CORS policy does not allow access from this origin.'), false);
-    }
-    return callback(null, true);
-  },
-  credentials: true,
+  origin: allowedOrigins,     // ✅ แบบ array จะกำหนด header ได้ถูกต้อง
+  credentials: true,          // ✅ ให้ cookie ส่งข้าม origin ได้
 }));
 
 app.use(cookieParser());

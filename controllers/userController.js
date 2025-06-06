@@ -37,11 +37,11 @@ exports.login = async (req, res) => {
     );
 
     res.cookie("token", token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production", // แบบนี้จะปลอดภัยและเหมาะสมกว่า
-        sameSite: "None",  // ต้องใช้กับ secure:true และถ้า frontend กับ backend ต่าง domain
-        maxAge: 60 * 60 * 1000,
-      });
+      httpOnly: true,
+      secure: true,
+      sameSite: "None", // << สำคัญมาก
+      maxAge: 24 * 60 * 60 * 1000,
+    });
 
     res.json({ message: "Login successful" });
   } catch (err) {
