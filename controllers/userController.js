@@ -32,7 +32,7 @@ exports.login = async (req, res) => {
 
     const token = jwt.sign(
       { userId: user.id, username: user.username },
-      'your_jwt_secret_key',
+      process.env.JWT_SECRET,     // ✅ ตอน sign ต้องใช้ secret เดียวกับ verify
       { expiresIn: '1h' }
     );
 
