@@ -38,9 +38,9 @@ exports.login = async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true,
-      secure: false,
-      sameSite: "lax",
-      maxAge: 60 * 60 * 1000,
+      secure: true,           // เปลี่ยนจาก false เป็น true (เพราะคุณใช้ HTTPS ทั้ง frontend/backend)
+      sameSite: "None",       // เปลี่ยนจาก 'lax' เป็น 'None' เพื่ออนุญาต cookie ข้ามโดเมน
+      maxAge: 60 * 60 * 1000, // 1 ชั่วโมง
     });
 
     res.json({ message: "Login successful" });
