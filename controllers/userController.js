@@ -117,13 +117,13 @@ exports.profile = async (req, res) => {
 
 exports.userprofile = async (req, res) => {
   try {
-    const result = await db.query('SELECt * FROM users');
-    res.json(result.row);
+    const result = await db.query('SELECT * FROM users');
+    res.json(result.rows); // rows ไม่ใช่ row
   } catch (err) {
     console.log(err.message);
-    res.status(500).json({error: 'เกิดข้อผิดพลาด'});
+    res.status(500).json({ error: 'เกิดข้อผิดพลาด' });
   }
-  };
+};
 
 
   exports.updateuser = async (req, res) => {
