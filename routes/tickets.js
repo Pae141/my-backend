@@ -98,4 +98,33 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
+// เช็คจำนวนตั๋วที่ยังเหลือสำหรับอีเว้นต์
+router.get('/:id/tickets-available', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const result = await pool.query(`
+      SELECT
+        e.ticket_quantity - COALESCE(SUM(b.quantity), 0) AS available
+      FROM
+        events e
+      LEFT JOIN
+        bookings b ON e.id = b.event_id
+      WHERE
+        e.id = $1
+      GROUP BY
+        e.ticket_quantity
+    `, [id]);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'ไม่พบอีเว้นต์นี้' });
+    }
+
+    res.json({ available: result.rows[0].available });
+  } catch (error) {
+    console.error('Error checking ticket availability:', error);
+    res.status(500).json({ error: 'เกิดข้อผิดพลาดในการตรวจสอบตั๋ว' });
+  }
+});
+
 module.exports = router;
