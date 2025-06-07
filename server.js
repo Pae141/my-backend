@@ -1,8 +1,5 @@
 require('dotenv').config();
 
-console.log('Using PGHOST:', process.env.PGHOST);
-console.log('Using PGPORT:', process.env.PGPORT);
-console.log('Using PGUSER:', process.env.PGUSER);
 
 
 const express = require('express');
@@ -13,7 +10,7 @@ const pool = require('./db');
 
 const app = express();
 
-
+const ticketRoutes = require('./routes/tickets');
 
 const allowedOrigins = ['http://localhost:3000','http://localhost:5173', 'https://pae141.github.io'];
 
@@ -29,6 +26,8 @@ app.options('*', cors({
 
 app.use(cookieParser());
 app.use(express.json());
+
+app.use('/api/tickets', ticketRoutes);
 
 // ✅ เชื่อมต่อเส้นทาง users
 const userRoutes = require('./routes/users');
