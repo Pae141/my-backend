@@ -57,4 +57,15 @@ router.post('/', auth, async (req, res) => {
   }
 });
 
+// GET bookings ของผู้ใช้ที่ล็อกอิน
+router.get('/user', auth, async (req, res) => {
+  try {
+    const bookings = await Booking.find({ userId: req.user.id });
+    res.json(bookings);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "เกิดข้อผิดพลาด" });
+  }
+});
+
 module.exports = router;
