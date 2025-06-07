@@ -40,4 +40,45 @@ router.post('/', async (req, res) => {
   }
 });
 
+
+router.put('/:id', async (req, res) => {
+  const eventId = req.params.id;
+  const {
+    name,
+    date,
+    time,
+    location,
+    price,
+    ticket_quantity,
+    booking_start,
+    booking_deadline,
+  } = req.body;
+
+  try {
+    const result = await pool.query(
+      `UPDATE events SET
+         name = $1,
+         date = $2,
+         time = $3,
+         location = $4,
+         price = $5,
+         ticket_quantity = $6,
+         booking_start = $7,
+         booking_deadline = $8
+       WHERE id = $9
+       RETURNING *`,
+      [name, date, time, location, price, ticket_quantity, booking_start, booking_deadline, eventId]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'ไม่พบอีเวนต์ที่ต้องการแก้ไข' });
+    }
+
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error('Error updating event:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
 module.exports = router;
