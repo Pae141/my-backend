@@ -4,7 +4,7 @@ const pool = require('../db');
 const authenticate = require('../middleware/authenticate');
 
 // POST /api/bookings
-router.post('/', authenticate, async (req, res) => {
+router.post('/', auth, async (req, res) => {
   const {
     event_id,
     full_name,
