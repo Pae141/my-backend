@@ -20,9 +20,11 @@ app.use(express.json());
 // routes
 const userRoutes = require('./routes/users');
 const ticketRoutes = require('./routes/tickets');
+const eventRoutes = require('./routes/events'); 
 
 app.use('/api/users', userRoutes);
 app.use('/api/tickets', ticketRoutes);
+app.use('/api/events', eventRoutes); 
 
 app.get('/test', (req, res) => {
   res.send('Test route is working');
