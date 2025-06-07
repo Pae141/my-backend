@@ -64,6 +64,7 @@ router.get('/user', auth, async (req, res) => {
       return res.status(401).json({ error: "Unauthorized - user not found in request" });
     }
 
+    console.log("User ID from token:", req.user.id);
     const userId = req.user.id;
 
     // ดึง booking ทั้งหมดของ user นี้ โดยเรียงตามเวลาสร้างล่าสุดก่อน
