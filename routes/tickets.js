@@ -87,13 +87,13 @@ router.put('/:id', async (req, res) => {
 router.delete('/:id', async (req, res) => {
   const { id } = req.params;
   try {
-    const result = await pool.query('DELETE FROM tickets WHERE id = $1 RETURNING *', [id]);
+    const result = await pool.query('DELETE FROM events WHERE id = $1 RETURNING *', [id]);
     if (result.rowCount === 0) {
       return res.status(404).json({ error: 'ไม่พบรายการที่ต้องการลบ' });
     }
     res.json({ message: 'ลบรายการสำเร็จ', deleted: result.rows[0] });
   } catch (error) {
-    console.error('Error deleting ticket:', error);
+    console.error('Error deleting events:', error);
     res.status(500).json({ error: 'เกิดข้อผิดพลาดในการลบข้อมูล' });
   }
 });
@@ -114,7 +114,7 @@ router.put('/:id', async (req, res) => {
 
   try {
     const result = await pool.query(
-      `UPDATE tickets SET
+      `UPDATE events SET
          name = $1,
          date = $2,
          time = $3,
@@ -134,7 +134,7 @@ router.put('/:id', async (req, res) => {
 
     res.json(result.rows[0]);
   } catch (error) {
-    console.error('Error updating ticket:', error);
+    console.error('Error updating events:', error);
     res.status(500).json({ error: 'เกิดข้อผิดพลาดในการอัปเดตข้อมูล' });
   }
 });
