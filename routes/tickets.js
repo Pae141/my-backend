@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const pool = require('../db');
 
+// ดึง events ทั้งหมด
 router.get('/', async (req, res) => {
   try {
     const result = await pool.query('SELECT * FROM events');
@@ -12,6 +13,7 @@ router.get('/', async (req, res) => {
   }
 });
 
+// เพิ่ม event ใหม่
 router.post('/', async (req, res) => {
   const {
     name,
@@ -40,7 +42,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-
+// อัปเดต event
 router.put('/:id', async (req, res) => {
   const eventId = req.params.id;
   const {
@@ -81,7 +83,23 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-app.put('/api/tickets/:id', async (req, res) => {
+// ลบ ticket
+router.delete('/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const result = await pool.query('DELETE FROM tickets WHERE id = $1 RETURNING *', [id]);
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: 'ไม่พบรายการที่ต้องการลบ' });
+    }
+    res.json({ message: 'ลบรายการสำเร็จ', deleted: result.rows[0] });
+  } catch (error) {
+    console.error('Error deleting ticket:', error);
+    res.status(500).json({ error: 'เกิดข้อผิดพลาดในการลบข้อมูล' });
+  }
+});
+
+// อัปเดต event
+router.put('/:id', async (req, res) => {
   const { id } = req.params;
   const {
     name,
@@ -120,5 +138,4 @@ app.put('/api/tickets/:id', async (req, res) => {
     res.status(500).json({ error: 'เกิดข้อผิดพลาดในการอัปเดตข้อมูล' });
   }
 });
-
 module.exports = router;
