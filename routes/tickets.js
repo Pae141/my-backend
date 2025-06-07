@@ -141,3 +141,5 @@ router.get('/:id', async (req, res) => {
     res.status(500).json({ error: 'เกิดข้อผิดพลาดในการดึงข้อมูลอีเว้นต์' });
   }
 });
+
+module.exports = router;
