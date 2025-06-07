@@ -20,11 +20,11 @@ app.use(express.json());
 // routes
 const userRoutes = require('./routes/users');
 const ticketRoutes = require('./routes/tickets');
-
+const bookingRoutes = require('./routes/bookings');
 
 app.use('/api/users', userRoutes);
 app.use('/api/tickets', ticketRoutes);
- 
+app.use('/api/bookings', bookingRoutes);
 
 app.get('/test', (req, res) => {
   res.send('Test route is working');
