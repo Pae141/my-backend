@@ -98,10 +98,8 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-// เช็คจำนวนตั๋วที่ยังเหลือสำหรับอีเว้นต์
 router.get('/:id/tickets-available', async (req, res) => {
   const { id } = req.params;
-
   try {
     const result = await pool.query(`
       SELECT
@@ -126,5 +124,3 @@ router.get('/:id/tickets-available', async (req, res) => {
     res.status(500).json({ error: 'เกิดข้อผิดพลาดในการตรวจสอบตั๋ว' });
   }
 });
-
-module.exports = router;
