@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const pool = require('../db'); // หรือ path ที่คุณใช้เชื่อมกับ PostgreSQL
+const pool = require('../db');
 
 router.get('/', async (req, res) => {
   try {
@@ -13,7 +13,6 @@ router.get('/', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-     res.json({ message: 'Ticket route is working!' });
   const {
     name,
     date,
