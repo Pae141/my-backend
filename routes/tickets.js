@@ -2,8 +2,14 @@ const express = require('express');
 const router = express.Router();
 const pool = require('../db'); // หรือ path ที่คุณใช้เชื่อมกับ PostgreSQL
 
-router.get('/', (req, res) => {
-  res.json({ message: 'Ticket route is working' });
+router.get('/', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM tickets');
+    res.json(result.rows);
+  } catch (err) {
+    console.error('Error fetching tickets:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
 });
 
 router.post('/', async (req, res) => {
