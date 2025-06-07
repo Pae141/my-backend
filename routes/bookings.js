@@ -67,7 +67,7 @@ router.get('/user', auth, async (req, res) => {
     const userId = req.user.id;
 
     // ดึง booking ทั้งหมดของ user นี้ โดยเรียงตามเวลาสร้างล่าสุดก่อน
-    const result = await db.query(
+    const result = await pool.query(
       'SELECT * FROM bookings WHERE user_id = $1 ORDER BY created_at DESC',
       [userId]
     );
