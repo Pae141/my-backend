@@ -58,19 +58,25 @@ router.post('/', auth, async (req, res) => {
 });
 
 // GET bookings ของผู้ใช้ที่ล็อกอิน
-router.get("/user", authenticateUser, async (req, res) => {
+router.get("/user", auth, async (req, res) => {
   try {
     if (!req.user) {
       return res.status(401).json({ error: "Unauthorized - user not found in request" });
     }
 
-    const bookings = await Booking.find({ userId: req.user.id });
-    res.json(bookings);
+    // ดึง booking ของ user จาก PostgreSQL
+    const result = await db.query(
+      'SELECT * FROM bookings WHERE user_id = $1 ORDER BY created_at DESC',
+      [req.user.id]
+    );
+
+    res.json(result.rows); // คืนข้อมูลทั้งหมดกลับไป
   } catch (err) {
     console.error("Error fetching bookings:", err.message);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
+
 
 
 module.exports = router;
