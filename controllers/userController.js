@@ -1,5 +1,6 @@
 const db = require("../db");
 const bcrypt = require('bcryptjs');
+const isProduction = process.env.NODE_ENV === 'production';
 
 const jwt = require("jsonwebtoken");
 
@@ -11,6 +12,15 @@ exports.getUsers = async (req, res) => {
     console.error(err);
     res.status(500).send("Server error");
   }
+};
+
+
+
+const cookieOptions = {
+  httpOnly: true,
+  secure: isProduction,
+  sameSite: isProduction ? "None" : "Lax",
+  path: "/",
 };
 
 exports.login = async (req, res) => {
