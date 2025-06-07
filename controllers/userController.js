@@ -86,11 +86,12 @@ exports.register = async (req, res) => {
 
 exports.logout = (req, res) => {
   console.log("Logout called");
-  res.clearCookie("token", {
+  res.cookie("token", "", {
   httpOnly: true,
-  secure: true,
-  sameSite: "None",
-  path: "/",  // แนะนำใส่ path ด้วยเพื่อความชัดเจน
+  secure: isProduction,
+  sameSite: isProduction ? "None" : "Lax",
+  expires: new Date(0), // ให้หมดอายุทันที
+  path: "/",
 });
 res.status(200).json({ message: "Logged out" });
 };
