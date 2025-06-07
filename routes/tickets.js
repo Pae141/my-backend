@@ -44,62 +44,6 @@ router.post('/', async (req, res) => {
 
 // อัปเดต event
 router.put('/:id', async (req, res) => {
-  const eventId = req.params.id;
-  const {
-    name,
-    date,
-    time,
-    location,
-    price,
-    ticket_quantity,
-    booking_start,
-    booking_deadline,
-  } = req.body;
-
-  try {
-    const result = await pool.query(
-      `UPDATE events SET
-         name = $1,
-         date = $2,
-         time = $3,
-         location = $4,
-         price = $5,
-         ticket_quantity = $6,
-         booking_start = $7,
-         booking_deadline = $8
-       WHERE id = $9
-       RETURNING *`,
-      [name, date, time, location, price, ticket_quantity, booking_start, booking_deadline, eventId]
-    );
-
-    if (result.rows.length === 0) {
-      return res.status(404).json({ error: 'ไม่พบอีเวนต์ที่ต้องการแก้ไข' });
-    }
-
-    res.json(result.rows[0]);
-  } catch (err) {
-    console.error('Error updating event:', err);
-    res.status(500).json({ error: 'Server error' });
-  }
-});
-
-// ลบ ticket
-router.delete('/:id', async (req, res) => {
-  const { id } = req.params;
-  try {
-    const result = await pool.query('DELETE FROM events WHERE id = $1 RETURNING *', [id]);
-    if (result.rowCount === 0) {
-      return res.status(404).json({ error: 'ไม่พบรายการที่ต้องการลบ' });
-    }
-    res.json({ message: 'ลบรายการสำเร็จ', deleted: result.rows[0] });
-  } catch (error) {
-    console.error('Error deleting events:', error);
-    res.status(500).json({ error: 'เกิดข้อผิดพลาดในการลบข้อมูล' });
-  }
-});
-
-// อัปเดต event
-router.put('/:id', async (req, res) => {
   const { id } = req.params;
   const {
     name,
@@ -134,8 +78,24 @@ router.put('/:id', async (req, res) => {
 
     res.json(result.rows[0]);
   } catch (error) {
-    console.error('Error updating events:', error);
+    console.error('Error updating event:', error);
     res.status(500).json({ error: 'เกิดข้อผิดพลาดในการอัปเดตข้อมูล' });
   }
 });
+
+// ลบ event
+router.delete('/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const result = await pool.query('DELETE FROM events WHERE id = $1 RETURNING *', [id]);
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: 'ไม่พบรายการที่ต้องการลบ' });
+    }
+    res.json({ message: 'ลบรายการสำเร็จ', deleted: result.rows[0] });
+  } catch (error) {
+    console.error('Error deleting events:', error);
+    res.status(500).json({ error: 'เกิดข้อผิดพลาดในการลบข้อมูล' });
+  }
+});
+
 module.exports = router;
