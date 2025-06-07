@@ -15,7 +15,8 @@ router.post('/', auth, async (req, res) => {
     pickup_location,
   } = req.body;
 
-  const user_id = req.user.id;
+  const user_id = req.user.userId; // ใช้ userId ตามที่ middleware กำหนด
+
 
   try {
     // 🔎 ดึงชื่ออีเวนต์จาก event_id
