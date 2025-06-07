@@ -58,16 +58,10 @@ router.post('/', auth, async (req, res) => {
 });
 
 // GET bookings ของผู้ใช้ที่ล็อกอิน
-router.get('/user', auth, async (req, res) => {
+router.get("/user", auth, async (req, res) => {
   try {
-    if (!req.user) {
-      return res.status(401).json({ error: "Unauthorized - user not found in request" });
-    }
+    const userId = req.user.userId; // 👈 สำคัญ!
 
-    console.log("User ID from token:", req.user.id);
-    const userId = req.user.id;
-
-    // ดึง booking ทั้งหมดของ user นี้ โดยเรียงตามเวลาสร้างล่าสุดก่อน
     const result = await pool.query(
       'SELECT * FROM bookings WHERE user_id = $1 ORDER BY created_at DESC',
       [userId]
@@ -75,8 +69,8 @@ router.get('/user', auth, async (req, res) => {
 
     res.json(result.rows);
   } catch (err) {
-    console.error('Error fetching bookings:', err.message);
-    res.status(500).json({ error: 'Internal Server Error' });
+    console.error("Error fetching bookings:", err.message);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
