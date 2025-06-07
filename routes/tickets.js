@@ -4,10 +4,10 @@ const pool = require('../db');
 
 router.get('/', async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM tickets');
+    const result = await pool.query('SELECT * FROM events');
     res.json(result.rows);
   } catch (err) {
-    console.error('Error fetching tickets:', err);
+    console.error('Error fetching events:', err);
     res.status(500).json({ error: 'Server error' });
   }
 });
@@ -26,7 +26,7 @@ router.post('/', async (req, res) => {
 
   try {
     const result = await pool.query(
-      `INSERT INTO tickets 
+      `INSERT INTO events
         (name, date, time, location, price, ticket_quantity, booking_start, booking_deadline)
        VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
        RETURNING *`,
@@ -35,7 +35,7 @@ router.post('/', async (req, res) => {
 
     res.status(201).json(result.rows[0]);
   } catch (err) {
-    console.error('Error inserting ticket:', err);
+    console.error('Error inserting event:', err);
     res.status(500).json({ error: 'Server error' });
   }
 });
