@@ -81,4 +81,44 @@ router.put('/:id', async (req, res) => {
   }
 });
 
+app.put('/api/tickets/:id', async (req, res) => {
+  const { id } = req.params;
+  const {
+    name,
+    date,
+    time,
+    location,
+    price,
+    ticket_quantity,
+    booking_start,
+    booking_deadline,
+  } = req.body;
+
+  try {
+    const result = await pool.query(
+      `UPDATE tickets SET
+         name = $1,
+         date = $2,
+         time = $3,
+         location = $4,
+         price = $5,
+         ticket_quantity = $6,
+         booking_start = $7,
+         booking_deadline = $8
+       WHERE id = $9
+       RETURNING *`,
+      [name, date, time, location, price, ticket_quantity, booking_start, booking_deadline, id]
+    );
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: 'ไม่พบรายการที่ต้องการแก้ไข' });
+    }
+
+    res.json(result.rows[0]);
+  } catch (error) {
+    console.error('Error updating ticket:', error);
+    res.status(500).json({ error: 'เกิดข้อผิดพลาดในการอัปเดตข้อมูล' });
+  }
+});
+
 module.exports = router;
